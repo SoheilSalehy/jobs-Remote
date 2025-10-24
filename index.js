@@ -75,7 +75,18 @@ function searchSubmitHandler (event){
     
     fetchJobsJson();
 }
-    
-    
-
+        
 searchFormEl.addEventListener('submit',searchSubmitHandler);
+
+const clickHandler = (event) =>{
+    event.preventDefault();
+    const jobItemEl = event.target.closest('.job-item');
+    const RemoveClass = document.querySelector('.job-item--active');
+    if (RemoveClass){
+        RemoveClass.classList.remove('job-item--active');
+    }
+    jobItemEl.classList.add('job-item--active');
+    console.log(jobItemEl);
+};
+
+jobListEl.addEventListener('click',clickHandler);
