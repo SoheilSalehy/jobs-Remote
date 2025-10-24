@@ -10,6 +10,8 @@ const sortByRelevantBtn = document.querySelector('.sorting__button sorting__butt
 const sortByRecentBtn = document.querySelector('.sorting__button sorting__button--recent');
 const pagingBtn = document.querySelector('.pagination__button pagination__button--next');
 const jobsToShow = document.querySelector('.job-details__content');
+const jobDetailsContentEl = document.querySelector('.job-details__content');
+const spinnerJobsDetailEl = document.querySelector('.spinner--job-details');
 const spinnerSearchEl =document.querySelector('.spinner--search');
 const spinnerJobDetailsEl = document.querySelector('.spinner--job-details');
 const jobNumberEl = document.querySelector('.count__number');
@@ -81,12 +83,33 @@ searchFormEl.addEventListener('submit',searchSubmitHandler);
 const clickHandler = (event) =>{
     event.preventDefault();
     const jobItemEl = event.target.closest('.job-item');
-    const RemoveClass = document.querySelector('.job-item--active');
-    if (RemoveClass){
-        RemoveClass.classList.remove('job-item--active');
-    }
+    //active job item
+    document.querySelector('.job-item--active')?.classList.remove('job-item--active');
     jobItemEl.classList.add('job-item--active');
-    console.log(jobItemEl);
+    jobDetailsContentEl.innerHTML='';
+    spinnerJobDetailsEl.classList.add('spinner--visible');
+    const jobItemId = jobItemEl.children[0].getAttribute('href');
+    console.log(jobItemId);
+    fetch(`https://bytegrad.com/course-assets/js/2/api/jobs/${jobItemId}`)
+    .then(response=>{
+        if(!response.ok){
+            console.log('somthing went wrong');
+            return;
+        }
+        return response.json();
+    })
+    .then(data =>{
+        console.log(data);
+    })
+    .catch(err => console.log(err));
+        
+    
+    
+    
+    
 };
 
 jobListEl.addEventListener('click',clickHandler);
+
+
+
